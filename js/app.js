@@ -1,5 +1,11 @@
 // Enemies our player must avoid
-var Enemy = function(x, y, speed) {
+let counter = document.querySelector('.score');
+let score = 0;
+let displayLives = document.querySelector('lives');
+let lives = 3;
+
+
+const Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -8,7 +14,7 @@ var Enemy = function(x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.speed = speed;
+    this.speed = 100 + Math.floor(Math.random() * 250);
 };
 
 // Update the enemy's position, required method for game
@@ -24,16 +30,19 @@ Enemy.prototype.update = function(dt) {
         this.speed = 100 + Math.floor(Math.random() * 250);
     }
         //CHECKS IF COLLISION OCCURED
-    if (player.x < this.x + 80 &&
-        player.x + 80 > this.x &&
+  this.checkCollision();
+};
+
+Enemy.prototype.checkCollision = function(){
+            //CHECKS IF COLLISION OCCURED
+    if (player.x < this.x + 70 &&
+        player.x + 70 > this.x &&
         player.y < this.y + 60 &&
         60 + player.y > this.y) {
         //resets the position of player
-        player.x = 202;
-        player.y = 405
+        player.reset();
     }
-};
-
+}
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -42,19 +51,29 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function(x, y) {
+const Player = function(x, y) {
     this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
 }
 
 Player.prototype.update = function (dt){
-
+    if (player.y < 0) {
+        score++;
+        counter.innerHTML = score;
+        player.reset();
+    }
 };
 
 Player.prototype.render = function (){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+Player.prototype.reset = function(){
+    this.x = 202;
+    this.y = 405;
+}
+
 
 Player.prototype.handleInput = function (keyPress) {
     if (keyPress == 'left' && this.x >= 0){
@@ -69,30 +88,25 @@ Player.prototype.handleInput = function (keyPress) {
     if (keyPress == 'down' && this.y < 405){
         this.y += 83;
     }
-
-    if (this.y < 0) {
-        this.x = 202;
-        this.y = 405;
-    }
 }
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = new Array();
-var enemyLocations = [63, 147, 230];
+let allEnemies = new Array();
+let enemyLocations = [63, 147, 230];
 
 enemyLocations.forEach(function (locationY){
-    enemy = new Enemy(0, locationY, 200);
+    enemy = new Enemy(-55, locationY, 200);
     allEnemies.push(enemy);
 });
 
-var player = new Player(202, 405);
+let player = new Player(202, 405);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
+    const allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
