@@ -71,8 +71,8 @@ Player.prototype.render = function (){
 };
 //Reset the position of the player
 Player.prototype.reset = function(){
-    this.x = player.startingX;
-    this.y = player.startingY;
+    this.x = this.startingX;
+    this.y = this.startingY;
 }
 
 //Define the movement of the player on the keypress
