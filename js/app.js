@@ -1,4 +1,6 @@
 
+const TITLE_WIDTH = 101,
+      TITLE_HEIGHT = 83;
 const Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here
     // The image/sprite for our enemies, this uses
@@ -6,7 +8,6 @@ const Enemy = function(x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.startingLocations = [63, 147, 230]
     this.speed = 100 + Math.floor(Math.random() * 250);
 };
 
@@ -22,7 +23,7 @@ Enemy.prototype.update = function(dt) {
         this.x = -100;
         this.speed = 100 + Math.floor(Math.random() * 250);
     }
-  this.checkCollision();
+    this.checkCollision();
 };
 
 //CHECKS IF COLLISION OCCURED
@@ -60,8 +61,8 @@ const Player = function() {
 //Player moves differently from enemies, so we dont need to use multiplied movement
 Player.prototype.update = function (dt){
     if (this.y < 0) {
-            player.reset();
-            player.score++;
+            this.reset();
+            this.score++;
     }
 };
 //Draws the player
@@ -77,16 +78,16 @@ Player.prototype.reset = function(){
 //Define the movement of the player on the keypress
 Player.prototype.handleInput = function (keyPress) {
     if (keyPress == 'left' && this.x >= 0){
-        this.x -= 102;
+        this.x -= TITLE_WIDTH;
     }
     if (keyPress == 'right' && this.x < 405){
-        this.x += 102;
+        this.x += TITLE_WIDTH;
     }
     if (keyPress == 'up' && this.y > 0){
-        this.y -= 83;
+        this.y -= TITLE_HEIGHT;
     }
     if (keyPress == 'down' && this.y < 405){
-        this.y += 83;
+        this.y += TITLE_HEIGHT;
     }
 }
 
