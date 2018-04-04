@@ -1,10 +1,8 @@
 
 const Enemy = function(x, y, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
+    // Variables applied to each of our instances go here
     // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // a helper to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
@@ -15,7 +13,7 @@ const Enemy = function(x, y, speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
+    // Multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x += this.speed * dt;
@@ -24,17 +22,17 @@ Enemy.prototype.update = function(dt) {
         this.x = -100;
         this.speed = 100 + Math.floor(Math.random() * 250);
     }
-        //CHECKS IF COLLISION OCCURED
   this.checkCollision();
 };
 
+//CHECKS IF COLLISION OCCURED
 Enemy.prototype.checkCollision = function(){
-            //CHECKS IF COLLISION OCCURED
+            //Compares position of a player and a bug, if they match - collision occured
     if (player.x < this.x + 70 &&
         player.x + 70 > this.x &&
         player.y < this.y + 60 &&
         60 + player.y > this.y) {
-        //resets the position of player
+        //If collision occured - reset the player's position
         player.reset();
         player.score = 0;
     }
@@ -42,11 +40,12 @@ Enemy.prototype.checkCollision = function(){
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    ctx.font = "30px Serif";
-    ctx.fillText(`Score: ${player.score}`, 202 , 20);
+    //Display athe score on canvas
+    ctx.font = "30px Roboto";
+    ctx.fillText(`Score: ${player.score}`, 202 , 30);
 };
 
-// Now write your own player class
+// The player class
 // This class requires an update(), render() and
 // a handleInput() method.
 const Player = function() {
@@ -58,23 +57,24 @@ const Player = function() {
     this.score = 0;
 }
 
+//Player moves differently from enemies, so we dont need to use multiplied movement
 Player.prototype.update = function (dt){
     if (this.y < 0) {
             player.reset();
             player.score++;
     }
 };
-
+//Draws the player
 Player.prototype.render = function (){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
+//Reset the position of the player
 Player.prototype.reset = function(){
     this.x = player.startingX;
     this.y = player.startingY;
 }
 
-
+//Define the movement of the player on the keypress
 Player.prototype.handleInput = function (keyPress) {
     if (keyPress == 'left' && this.x >= 0){
         this.x -= 102;
@@ -90,21 +90,19 @@ Player.prototype.handleInput = function (keyPress) {
     }
 }
 
-// Now instantiate your objects.
+// Now instantiate our objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 let allEnemies = [];
+//Enemy starting locations
 let enemyLocations = [63, 147, 230];
 
-// enemyLocations.forEach(function (locationY){
-//     enemy = new Enemy(-55, locationY, 200);
-//     allEnemies.push(enemy);
-// });
-
+//Create the array of 3 enemies
 for(let enemyLocation of enemyLocations){
     allEnemies.push(new Enemy(-60, enemyLocation, 200));
 }
 
+//Create the new player
 let player = new Player();
 
 // This listens for key presses and sends the keys to your
